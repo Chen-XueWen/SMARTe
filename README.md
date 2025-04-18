@@ -1,4 +1,4 @@
-# SMARTe
+# SMARTe: Slot-based Method for Accountable Relational Triple extraction
 
 Code for our paper [SMARTe: Slot-based Method for Accountable Relational Triple extraction]([https://arxiv.org/abs/2010.11304](http://arxiv.org/abs/2504.12816
 ).
