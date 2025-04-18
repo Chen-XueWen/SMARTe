@@ -1,4 +1,20 @@
-Paper: To Be Released
+# SMARTe
+Code for our paper [SMARTe: Slot-based Method for Accountable Relational Triple extraction]([https://arxiv.org/abs/2010.11304](http://arxiv.org/abs/2504.12816
+).
+
+If you make use of this code in your work, please kindly cite the following paper:
+
+```bibtex
+@misc{tan2025smarteslotbasedmethodaccountable,
+      title={SMARTe: Slot-based Method for Accountable Relational Triple extraction}, 
+      author={Xue Wen Tan and Stanley Kok},
+      year={2025},
+      eprint={2504.12816},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2504.12816}, 
+}
+```
 
 Before proceeding, ensure that all required packages are installed. The necessary dependencies for SMARTE are listed below:
 
