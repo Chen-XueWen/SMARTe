@@ -1,7 +1,6 @@
 # SMARTe: Slot-based Method for Accountable Relational Triple extraction
 
-Code for our paper [SMARTe: Slot-based Method for Accountable Relational Triple extraction]([https://arxiv.org/abs/2010.11304](http://arxiv.org/abs/2504.12816
-).
+Code for our paper [SMARTe: Slot-based Method for Accountable Relational Triple extraction](http://arxiv.org/abs/2504.12816).
 
 <img width="828" alt="Architecture" src="https://github.com/Chen-XueWen/SMARTe/blob/main/Architecture.png" />
 
