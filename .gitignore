@@ -1,0 +1,8 @@
+LLMs/processed/NYT-Exact/test_features.pkl
+LLMs/processed/NYT-Exact/traindev_features.pkl
+LLMs/processed/WebNLG-Exact/test_features.pkl
+LLMs/processed/WebNLG-Exact/traindev_features.pkl
+
+LLMs/*.txt
+LLMs/keys.py
+LLMs/__pycache__/*
