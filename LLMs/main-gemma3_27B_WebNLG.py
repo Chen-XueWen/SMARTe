@@ -31,18 +31,16 @@ Output ONLY a Python list of dictionaries.  For example
 """
     
     payload = {
-        "model": "llama3.3:70b",
+        "model": "gemma3:27b",
         "messages": [{"role": "user",
                       "content": f"{prompt}"}],
-        "stream": False,
-        "options": {"num_predict": 1024}
+        "stream": False
     }
 
     response = requests.post(OLLAMA_URL, json=payload)
     response.raise_for_status()
     result = response.json()
     raw = result['message']['content']
-
     raw = raw.strip()
     if raw.startswith("```"):
         # Remove the first line (e.g., ```python) and the last line (```)
@@ -70,31 +68,17 @@ Output ONLY a Python list of dictionaries.  For example
 
 def compute_f1(true_triples, pred_triples):
     """
-    Compute precision, recall, F1 while skipping malformed entries.
+    Compute precision, recall, F1 between two lists of dicts.
+    Treat each dict as a tuple (subject, relation, object).
     """
-    true_set = set((t['subject'], t['relation'], t['object']) for t in true_triples)
-
-    pred_set = set()
-    for t in pred_triples:
-        try:
-            triple = (t['subject'], t['relation'], t['object'])
-            # Make sure all elements are hashable (strings, ints, etc.)
-            if all(isinstance(x, (str, int, float)) for x in triple):
-                pred_set.add(triple)
-            else:
-                # Convert unhashable parts (e.g., lists) to strings
-                triple = tuple(" ".join(map(str, x)) if isinstance(x, list) else x for x in triple)
-                pred_set.add(triple)
-        except Exception as e:
-            print(f"[Warning] Skipping malformed pred triple: {t} ({e})")
-            continue
-
+    true_set = set((t['subject'],t['relation'],t['object']) for t in true_triples)
+    pred_set = set((t['subject'],t['relation'],t['object']) for t in pred_triples)
     tp = len(true_set & pred_set)
     p = tp / len(pred_set) if pred_set else 0.0
     r = tp / len(true_set) if true_set else 0.0
-    f1 = 2 * p * r / (p + r) if (p + r) > 0 else 0.0
-
+    f1 = 2*p*r/(p+r) if (p+r) > 0 else 0.0
     return p, r, f1
+
 
 def main():
     parser = argparse.ArgumentParser()

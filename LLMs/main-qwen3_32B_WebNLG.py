@@ -12,11 +12,11 @@ OLLAMA_URL = "http://localhost:11434/api/chat"
 def extract_triples_with_llm(text):
     """
     Prompts the model to extract triples in JSON-like list-of-dicts format,
-    choosing relations only from the given 24-item inventory.
+    choosing relations only from the given 218-item inventory.
     Returns: a Python list of dicts (each with 'subject','relation','object').
     """
     RELATIONS = [
-        "industry", "place_lived", "founders", "advisors", "children", "neighborhood_of", "people", "profession", "place_of_birth", "ethnicity", "teams", "company", "administrative_divisions", "place_of_death", "geographic_distribution", "major_shareholders", "nationality", "place_founded", "capital", "country", "religion", "major_shareholder_of", "contains", "location"
+        "region", "cityServed", "ISBN_number", "chairman", "class", "administrativeArrondissement", "bird", "influencedBy", "notableWork", "was given the 'Technical Campus' status by", "ICAO_Location_Identifier", "hubAirport", "leader", "affiliation", "areaOfLand", "firstPublicationYear", "inaugurationDate", "5th_runway_Number", "director", "leaderParty", "location", "3rd_runway_LengthFeet", "populationDensity", "campus", "firstAppearanceInFilm", "state", "areaOfWater", "rector", "numberOfMembers", "religion", "elevationAboveTheSeaLevel_(in_feet)", "headquarter", "mediaType", "EISSN_number", "title", "placeOfBirth", "creatorOfDish", "parentCompany", "served as Chief of the Astronaut Office in", "has to its southwest", "currentTenants", "series", "address", "LibraryofCongressClassification", "runwayLength", "fossil", "languages", "1st_runway_SurfaceType", "postalCode", "child", "foundationPlace", "course", "has to its southeast", "areaTotal", "season", "occupation", "nativeName", "material", "3rd_runway_SurfaceType", "abbreviation", "youthclub", "ReferenceNumber in the National Register of Historic Places", "language", "yearOfConstruction", "servingTemperature", "city", "birthPlace", "genus", "was selected by NASA", "populationTotal", "president", "distributor", "part", "fullname", "backup pilot", "aircraftFighter", "OCLC_number", "voice", "significantProject", "nearestCity", "CODEN_code", "numberOfRooms", "hometown", "chief", "senators", "protein", "birthName", "nationality", "has to its northwest", "ISSN_number", "neighboringMunicipality", "almaMater", "legislature", "country", "headquarters", "governmentType", "author", "municipality", "author", "precededBy", "transportAircraft", "fullName", "representative", "residence", "doctoralAdvisor", "significantBuilding", "transportAircraft", "district", "dedicatedTo", "chairmanTitle", "anthem", "operator", "isPartOf", "4th_runway_LengthFeet", "mainIngredients", "areaCode", "academicDiscipline", "architect", "gemstone", "year", "commander", "LCCN_number", "deathPlace", "chairperson", "buildingStartDate", "order", "patronSaint", "officialLanguage", "runwayName", "1st_runway_LengthMetre", "owningOrganisation", "followedBy", "floorCount", "currency", "editor", "jurisdiction", "founder", "crewMembers", "champions", "elevationAboveTheSeaLevel_(in_metres)", "largestCity", "numberOfUndergraduateStudents", "chancellor", "1st_runway_LengthFeet", "height", "administrativeCounty", "locationCity", "mayor", "category", "tenant", "numberOfPages", "starring", "publisher", "established", "keyPerson", "fat", "governingBody", "elevationAboveTheSeaLevel", "manager", "nickname", "sportsGoverningBody", "capital", "1st_runway_Number", "battles", "family", "numberOfPostgraduateStudents", "placeOfDeath", "genre", "foundedBy", "award", "demonym", "affiliations", "ethnicGroup", "regionServed", "ground", "architecturalStyle", "was a crew member of", "alternativeName", "latinName", "dean", "creator", "bedCount", "leaderName", "aircraftHelicopter", "ethnicGroups", "compete in", "IATA_Location_Identifier", "developer", "academicStaffSize", "2nd_runway_SurfaceType", "dishVariation", "spokenIn", "awards", "sportsOffered", "floorArea", "architecture", "has to its north", "product", "designer", "has to its west", "leaderTitle", "numberOfStudents", "river", "countySeat", "owner", "has to its northeast", "operatingOrganisation", "motto", "higher", "motto", "club", "added to the National Register of Historic Places", "outlookRanking", "broadcastedBy", "completionDate", "ingredient", "attackAircraft", "league"
     ]
     rels_str = ", ".join(f"'{r}'" for r in RELATIONS)
 
@@ -31,18 +31,16 @@ Output ONLY a Python list of dictionaries.  For example
 """
     
     payload = {
-        "model": "llama3.3:70b",
+        "model": "qwen:32b",
         "messages": [{"role": "user",
                       "content": f"{prompt}"}],
-        "stream": False,
-        "options": {"num_predict": 1024}
+        "stream": False
     }
 
     response = requests.post(OLLAMA_URL, json=payload)
     response.raise_for_status()
     result = response.json()
     raw = result['message']['content']
-
     raw = raw.strip()
     if raw.startswith("```"):
         # Remove the first line (e.g., ```python) and the last line (```)
@@ -98,7 +96,7 @@ def compute_f1(true_triples, pred_triples):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data_type", type=str, default="NYT-Exact", help="Dataset type (e.g., NYT-Exact)")
+    parser.add_argument("--data_type", type=str, default="WebNLG-Exact", help="Dataset type (e.g., NYT-Exact)")
     args = parser.parse_args()
 
     #with open(f"./processed/{args.data_type}/traindev_features.pkl", 'rb') as f:

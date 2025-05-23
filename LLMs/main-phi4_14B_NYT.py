@@ -31,11 +31,10 @@ Output ONLY a Python list of dictionaries.  For example
 """
     
     payload = {
-        "model": "llama3.3:70b",
+        "model": "phi4:14b",
         "messages": [{"role": "user",
                       "content": f"{prompt}"}],
-        "stream": False,
-        "options": {"num_predict": 1024}
+        "stream": False
     }
 
     response = requests.post(OLLAMA_URL, json=payload)
